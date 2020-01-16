@@ -1,11 +1,12 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.spikes2212.command.genericsubsystem.GenericSubsystem;
+import com.spikes2212.command.genericsubsystem.commands.MoveGenericSubsystem;
 import com.spikes2212.utils.Namespace;
 import com.spikes2212.utils.RootNamespace;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.VictorSP;
 import frc.robot.RobotMap;
 
 
@@ -22,7 +23,7 @@ public class Gripper extends GenericSubsystem {
 
     public static Gripper getInstance() {
         if (instance == null) {
-            motor = new SpeedControllerGroup(new WPI_VictorSPX(RobotMap.PWM.GRIPPER_LEFT), new WPI_VictorSPX(RobotMap.PWM.GRIPPER_RIGHT));
+            motor = new SpeedControllerGroup(new VictorSP(RobotMap.PWM.GRIPPER_LEFT), new VictorSP(RobotMap.PWM.GRIPPER_RIGHT));
             limit = new DigitalInput(RobotMap.DIO.GRIPPER_LIMIT);
             instance = new Gripper(motor, limit);
         }
@@ -32,12 +33,11 @@ public class Gripper extends GenericSubsystem {
     @Override
     public void apply(double speed) {
         motor.set(speed);
-
     }
 
     @Override
     public boolean canMove(double speed) {
-        return (!(speed < 0) || limit.get()) && ((!(speed > 0)) || !limit.get());
+        return !(speed < 0 && limit.get());
     }
 
     @Override

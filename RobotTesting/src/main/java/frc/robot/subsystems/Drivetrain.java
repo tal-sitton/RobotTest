@@ -18,32 +18,32 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.RobotMap;
 
-public class DriveTrain extends TankDrivetrain {
-    private static final Namespace NAMESPACE=new RootNamespace("DriveTrain");
-    private static DriveTrain instance;
+public class Drivetrain extends TankDrivetrain {
+    private static final Namespace NAMESPACE=new RootNamespace("Drivetrain");
+    private static Drivetrain instance;
     private static Encoder leftEncoder;
     private static Encoder rightEncoder;
     private static ADXRS450_Gyro gyro;
 
-    private DriveTrain(SpeedController left, SpeedController right, Encoder leftEncoder, Encoder rightEncoder, ADXRS450_Gyro gyro) {
+    private Drivetrain(SpeedController left, SpeedController right, Encoder leftEncoder, Encoder rightEncoder, ADXRS450_Gyro gyro) {
         super(left, right);
-        DriveTrain.leftEncoder = leftEncoder;
-        DriveTrain.rightEncoder = rightEncoder;
-        DriveTrain.gyro = gyro;
+        Drivetrain.leftEncoder = leftEncoder;
+        Drivetrain.rightEncoder = rightEncoder;
+        Drivetrain.gyro = gyro;
     }
 
-    public static DriveTrain getInstance() {
+    public static Drivetrain getInstance() {
         if (instance == null) {
             WPI_TalonSRX leftTalon = new WPI_TalonSRX(RobotMap.CAN.DRIVETRAIN_TALON_LEFT);
             WPI_VictorSPX leftVictor = new WPI_VictorSPX(RobotMap.CAN.DRIVETRAIN_VICTOR_LEFT);
             leftVictor.follow(leftTalon);
             WPI_TalonSRX rightTalon = new WPI_TalonSRX(RobotMap.CAN.DRIVETRAIN_TALON_RIGHT);
             WPI_VictorSPX rightVictor = new WPI_VictorSPX(RobotMap.CAN.DRIVETRAIN_VICTOR_RIGHT);
-            leftVictor.follow(leftTalon);
+            rightVictor.follow(rightTalon);
             leftEncoder = new Encoder(RobotMap.DIO.DRIVETRAIN_ENCODER_LEFT_A, RobotMap.DIO.DRIVETRAIN_ENCODER_LEFT_B);
             rightEncoder = new Encoder(RobotMap.DIO.DRIVETRAIN_ENCODER_RIGHT_A, RobotMap.DIO.DRIVETRAIN_ENCODER_RIGHT_B);
             gyro = new ADXRS450_Gyro();
-            instance = new DriveTrain(leftTalon, rightTalon, leftEncoder, rightEncoder, gyro);
+            instance = new Drivetrain(leftTalon, rightTalon, leftEncoder, rightEncoder, gyro);
         }
         return instance;
     }

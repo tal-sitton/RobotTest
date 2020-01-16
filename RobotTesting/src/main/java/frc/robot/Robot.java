@@ -7,11 +7,12 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import com.spikes2212.command.drivetrains.TankDrivetrain;
+import com.spikes2212.command.drivetrains.commands.DriveTank;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Gripper;
 
 /**
@@ -22,9 +23,9 @@ import frc.robot.subsystems.Gripper;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-  DriveTrain driveTrain;
+  Drivetrain driveTrain;
   Gripper gripper;
-  public static OI oi;
+
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -32,11 +33,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    driveTrain=DriveTrain.getInstance();
+    driveTrain= Drivetrain.getInstance();
     gripper=Gripper.getInstance();
-    oi=new OI();
     driveTrain.initDashboard();
     gripper.initDashboard();
+    driveTrain.setDefaultCommand(new DriveTank(driveTrain,OI::getLeftY,OI::getRightY));
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
 
